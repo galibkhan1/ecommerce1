@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load cart %}
+
+{% block title %}
+cart
+{% endblock title %}
+{% block content %}
+{% if cart_pro %}
+<table class="table">
+    <tr>
+        <th>serial</th>
+        <th>Product Image</th>
+        <th>Product name</th>
+        <th>Product price</th>
+        <th>Product quantity</th>
+        <th>Total Price</th>
+    </tr>
+    {% for cart in  cart_pro%}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td><img src="{{cart.image.url}}" alt="{{cart.name}}" height="200px" width = "200px"></td>
+        <td>{{cart.name}}</td>
+        <td>{{cart.price}}</td>
+        <td>{{cart|cartquant:request.session.cart}}</td>
+        <td>{{cart|totalprice:request.session.cart}}</td>
+
+
+
+
+    </tr>
+    
+    {% endfor %}
+    <tr>
+        <th>Sum</th>
+        <td>{{cart_pro|totalsum:request.session.cart}}</td>
+    </tr>
+</table>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-dark border rounded col-lg-3 float-end" data-bs-toggle="modal" data-bs-target="#checkbox" >
+    check out
+  </button>
+  {% else %}
+  <h1 style="text-align:center">Please Add Product</h1>
+  {% endif %}
+  
+  <!-- Modal -->
+  <div class="modal fade" id="checkbox" tabindex="-1" aria-labelledby="checkboxLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="checkboxLabel">Fill your information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'checkout' %}" method  ="POST">
+              {% csrf_token %}
+              <label for="">address</label>
+              <input type="text" name ="address" id = "address" class = "form-control">
+              <label for="">phone</label>
+              <input type="text" name="phone" id ="phone" class ="form-control"><br>
+              <button type="submit" class="btn btn-dark" value="submit">Checkout</button>
+
+
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+

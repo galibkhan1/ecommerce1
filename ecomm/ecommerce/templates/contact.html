@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load cart %}
+{% block title %}
+contact
+{% endblock title %}
+{% block content %}
+
+{% comment %} {% if error_msg %}
+<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="display: block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>{{error_msg}}</h3>
+      </div>
+      <form action=" {% url 'home' %}" method = "post">
+          {% csrf_token %}
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Ok</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %} 
+
+  <table class="table table-striped|sm|bordered|hover|inverse table-inverse table-responsive" id= "myul">
+    <thead class="thead-inverse|thead-default">
+      
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for i in c %}
+        <tr>
+          <td scope ="row"><a href = "#">{{i.firstname}}</a></td>
+          <td><a href = "#">{{i.lastname}}</a></td>
+          <td><a href = "#">{{i.email}}</a></td>
+          <td><a href = "#">{{i.gender}}</a></td>
+        </tr>
+         {% endfor %}
+      </tbody>
+  </table>
+   {% endcomment %}
+ 
+   <div class="container" style = "margin-top:1%">
+
+
+        <div class="row mx-auto">
+
+          {% comment %} filter category {% endcomment %}
+          <div class="col-lg-3 row mx-auto">
+                {% comment %} <div class="list-group">
+                  {% for cate in cat %}
+                  <a href="/home/?category={{cate.id}}" class="list-group-item list-group-item-action">{{cate.name}}</a>
+                  {% endfor %}
+                </div> {% endcomment %}
+
+
+                <div class="dropdown" >
+  <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Choose Catrgory
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    
+      
+      {% for catee in cat %}
+      <li>
+                  <a href="../contact/?category={{catee.id}}" class="list-group-item list-group-item-action">{{catee.name}}</a>
+                  </li>
+                  {% endfor %}
+  </ul>
+</div>
+
+
+          </div>
+
+          {% comment %} Product category {% endcomment %}
+
+          <div class="col-lg-9 mx-auto" id = "products">
+            <div class="row my-3 mx-auto">
+              {% for img in path  %}
+              <div class="card mx-auto mb-3"  style="width: 18rem;">
+                <img src="{{img.image.url}}" class="card-img-top mx-auto" height =200 alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{img.name}}</h5>
+                  <p class="card-text">Rs.{{img.price}}</p>
+                  <a href="#" class="btn btn-primary">Add to Cart</a>
+                </div>
+              </div>
+              {% endfor %}
+              </div>
+                  
+              </div>
+          </div>
+
+
+
+    </div>
+
+   </div>
+   
+<form action="{% url 'logout' %}" method = "POST">
+  {% csrf_token %}
+  <input type="submit" value= "logout">
+</form>
+
+{% endblock content %}
